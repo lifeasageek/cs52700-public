@@ -1,0 +1,4 @@
+/afl-2.33b*
+/test/bin-*
+/test/test-*
+/test/output-*
