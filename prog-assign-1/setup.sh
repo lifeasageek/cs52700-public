@@ -13,3 +13,8 @@ make -j`nproc`
 # Setup AFL's qemu_mode.
 pushd qemu_mode
 ./build_qemu_support.sh
+popd
+
+# Replace afl-qemu-trace with a corresponding symbolic link
+rm -f afl-qemu-trace
+ln -s ./qemu_mode/qemu-2.3.0/`uname -m`-linux-user/qemu-`uname -m` afl-qemu-trace 
