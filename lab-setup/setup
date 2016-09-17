@@ -1,0 +1,57 @@
+#!/usr/bin/env python2
+import argparse
+import os
+import sys
+
+ASLR_OPTION = "kernel.randomize_va_space"
+SYSCTL_CONF = "/etc/sysctl.conf"
+
+def FATAL(msg):
+    print(msg)
+    sys.exit(-1)
+
+def sysctl(opt, val):
+    setting = "%s=%d" % (opt, val)
+    os.system("sysctl -w %s >/dev/null" % setting)
+
+    data = ""
+    with open(SYSCTL_CONF, "r") as f:
+        for line in f:
+            if opt in line:
+                continue
+            data += line
+
+    data += "%s\n" % setting
+
+    with open(SYSCTL_CONF, "w") as f:
+        f.write(data)
+
+def handle_enable_aslr():
+    sysctl(ASLR_OPTION, 2)
+
+def handle_disable_aslr():
+    sysctl(ASLR_OPTION, 0)
+
+def check_root():
+    if os.geteuid() != 0:
+        FATAL("Must be a root")
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("cmds", nargs="+",
+            default=[])
+    return parser.parse_args()
+
+def main():
+    args = parse_args()
+    check_root()
+    for cmd in args.cmds:
+        fn = "handle_%s" % cmd
+        f = globals().get(fn)
+        if f is None:
+            FATAL("No such command: %s" % fn)
+        else:
+            f()
+
+if __name__ == "__main__":
+    main()
