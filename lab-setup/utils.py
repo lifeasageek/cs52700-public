@@ -24,6 +24,14 @@ def get_env():
     return "%s-%s" % (platform.architecture()[0][0:2], platform.release())
 
 
+def shrun(cmds):
+    try:
+        output = subprocess.check_output(cmds,
+                                         universal_newlines=True)
+    except subprocess.CalledProcessError as e:
+        output = e.output
+    return output
+
 #
 # flag related
 #

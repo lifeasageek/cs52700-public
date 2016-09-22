@@ -19,8 +19,24 @@ def check_rootpath():
 def check_arch():
     return platform.architecture()[0][0:2]
 
+def get_kflag_kv():
+    cmds = ["modinfo", "-F", "vermagic", "kflag.ko"]
+    return canonical_kv(shrun(cmds).split()[0])
+
+def get_kv():
+    return canonical_kv(platform.release())
+
+def canonical_kv(kv):
+    return kv.split("-")[0]
+
 def check_kernel():
-    return platform.release().split("-")[0]
+    kflag_kv = get_kflag_kv()
+    kv = get_kv()
+    if kflag_kv != kv:
+        print("[-] ERROR: Kernel version is not compatible: %s <-> %s" % \
+              (kflag_kv, kv))
+        exit(-1)
+    return kv
 
 def install_kflag():
     try:
