@@ -46,7 +46,7 @@ def install_kflag():
         print("[-] ERROR: Failed to insert module")
         exit(-1)
 
-def download_kflag(kernel, bit):
+def download_kflag(bit):
     if os.path.exists(KFLAG):
         os.unlink(KFLAG)
 
@@ -91,16 +91,15 @@ def check_packages():
 if __name__ == "__main__":
     check_rootpath()
     check_packages()
-
-    kernel=check_kernel()
-    print("> kernel: %s" % kernel)
-
     bit = check_arch()
     print("> architecture: %s bit" % bit)
     assert(bit == "64")
 
-    download_kflag(kernel, bit)
+    download_kflag(bit)
     print("> kflag module downloaded")
+
+    kernel=check_kernel()
+    print("> kernel: %s" % kernel)
 
     uninstall_kflag()
     install_kflag()
