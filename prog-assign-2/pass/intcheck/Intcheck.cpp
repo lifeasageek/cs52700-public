@@ -47,11 +47,11 @@ namespace {
       for (auto &B : F) {
         for (auto &I : B) {
           if (auto *op = dyn_cast<BinaryOperator>(&I)) {
-            errs() << "OP: " << I << "\n";
-
             // TODO: Implement the shouldCheckOverflow() function.
             if (!shouldCheckOverflow(&I, 0))
               continue;
+
+            errs() << "Instrument: " << I << "\n";
 
             // Insert call instruction *after* `op`.
             // TODO: Pass more information including operands of computations.

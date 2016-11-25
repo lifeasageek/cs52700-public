@@ -9,7 +9,7 @@ $(INTCHECK_LIB): $(INTCHECK_SRC) $(RTSRC)
 	cd build && LLVM_DIR=${CURDIR}/llvm/build cmake ../pass && make
 
 run: $(INTCHECK_LIB)
-	clang-3.8 -g -Xclang -load -Xclang $(INTCHECK_LIB) $(RTSRC) ./test/simple/simple.c
+	clang-3.8 -g -Xclang -load -Xclang $(INTCHECK_LIB) $(RTSRC) ./test/malloc-overflow/malloc-overflow.c 
 	./a.out 10 10
 
 clean:
