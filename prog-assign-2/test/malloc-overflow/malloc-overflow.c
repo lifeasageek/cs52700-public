@@ -1,4 +1,4 @@
-// If z is overflow, we should generate the warning.
+// If z is overflowed, we should generate the warning.
 
 // RUN: %cc %intcheck_cflags %s %rtsrc -o %t.after
 // RUN: %t.after 10 10| %filecheck %s --check-prefix=NOOVERFLOW
